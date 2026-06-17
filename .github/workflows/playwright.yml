@@ -20,6 +20,12 @@ jobs:
         run: npm ci
       - name: Run your tests
         run: npm run ci-device
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
 # name: Playwright Tests
 # on:
 #   push:
