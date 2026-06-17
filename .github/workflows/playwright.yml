@@ -19,7 +19,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Run your tests
-        run: npx playwright test
+        run: npm run ci-device
 # name: Playwright Tests
 # on:
 #   push:

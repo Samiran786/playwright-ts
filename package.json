@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "local-device": "playwright test --config=playwright.local.config.ts",
+    "ci-device": "playwright test --config=playwright.ci.config.ts"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
