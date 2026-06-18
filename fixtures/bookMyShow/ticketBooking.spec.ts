@@ -1,5 +1,5 @@
 import {test,expect} from "@playwright/test";
-import { calenderSelector} from "../../../utils/calenderSelector.utils";
+import { calenderSelector} from "../../utils/calenderSelector.utils";
 
 test('Booking tickets', async function({page}){
     const rootCal = page.locator(`.datepicker:not(.hidden)`);
