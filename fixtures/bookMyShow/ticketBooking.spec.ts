@@ -1,18 +1,18 @@
 import {test,expect} from "@playwright/test";
-import { calenderSelector} from "../../utils/calenderSelector.utils";
+import { HomePage } from "../../pageObject/bookMyShow/homepage.page";
 
-test('Booking tickets', async function({page}){
-    const rootCal = page.locator(`.datepicker:not(.hidden)`);
-    const datePicker = rootCal.locator(`div.day:not(.disabled)`);
-    const monthChecker = rootCal.locator(`.datepicker-months span`);
-    const deptOption = page.getByLabel('Departure Date').nth(0);
-    const returnOption = page.getByLabel('Return Date').nth(0)
-    const calenderSel = new calenderSelector(page,rootCal,datePicker,monthChecker);
-    
-    const cookieButton = page.locator('#acknowledgeDemoWarning');
-    page.goto("https://phptravels.net/");
-    await cookieButton.click();
-    await page.getByRole('tab',{ name: 'Flights' }).click();
-    await page.getByRole('button',{ name: 'Round Trip' }).click();
-    await calenderSel.dateSelector(deptOption,returnOption,4);
-})
+test('Selecting dates for round-trip flight ticket with 5 days gap', async function({page},testInfo){
+    const homePage = new HomePage(page);
+    const match : RegExpMatchArray | null = testInfo.title.match(/\+d/);
+    const testData:number = match ? Number.parseInt(match[0],10) :0;
+    await homePage.pageNavigation();
+    const pageNavScrSht = await page.screenshot();
+    await testInfo.attach('page navigation screenshot', {body:pageNavScrSht, contentType:'image/png'});
+    await homePage.dateSelector(testData);
+    const dateSelScrSht = await page.screenshot();
+    await testInfo.attach('date selector screenshot', {body:dateSelScrSht, contentType:'image/png'});
+});
+
+test('Selecting destinations for round-trip flight ticket',async function(){
+
+});

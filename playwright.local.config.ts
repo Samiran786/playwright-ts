@@ -39,7 +39,10 @@ export default defineConfig({
       name: 'chromium',
       use: {
         headless:false ,
-        screenshot: 'on'
+        screenshot: {
+          mode: 'on',
+          fullPage: true
+        }
         ,
         ...devices['Desktop Chrome'] },
     },
