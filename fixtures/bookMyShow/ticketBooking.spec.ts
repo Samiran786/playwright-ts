@@ -14,5 +14,5 @@ test('Selecting dates for round-trip flight ticket with 5 days gap', async funct
 });
 
 test('Selecting destinations for round-trip flight ticket',async function(){
-
+    
 });

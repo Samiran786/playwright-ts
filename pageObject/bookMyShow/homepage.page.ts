@@ -1,31 +1,41 @@
-import { Page,Locator } from "@playwright/test";
+import { Page,Locator, expect } from "@playwright/test";
 import { BasePage } from "./basepage.page";
 import { calenderSelector} from "../../utils/calenderSelector.utils";
 
 export class HomePage extends BasePage{
-    protected readonly rootCal      : Locator;
-    protected readonly datePicker   : Locator;
-    protected readonly monthChecker : Locator;
-    protected readonly deptOption   : Locator;
-    protected readonly returnOption : Locator;
-    protected readonly cookieButton : Locator;
-    protected readonly flightOption : Locator;
-    protected readonly roundTripOpt : Locator;
-    protected readonly deptLocation : Locator;
-    protected readonly arrLocation  : Locator;
+    protected readonly rootCal          : Locator;
+    protected readonly datePicker       : Locator;
+    protected readonly monthChecker     : Locator;
+    protected readonly deptOption       : Locator;
+    protected readonly returnOption     : Locator;
+    protected readonly cookieButton     : Locator;
+    protected readonly flightOption     : Locator;
+    protected readonly roundTripOpt     : Locator;
+    protected readonly deptLocation     : Locator;
+    protected readonly arrLocation      : Locator;
+    protected readonly locFromDropdown  : Locator;
+    protected readonly locToDropDown    : Locator;
+    protected readonly locFrom          : Locator;
+    protected readonly locTo            : Locator;
+
     
     constructor(page:Page){
         super(page);
-        this.rootCal = this.page.locator(`.datepicker:not(.hidden)`);
-        this.datePicker = this.rootCal.locator(`div.day:not(.disabled)`);
-        this.monthChecker = this.rootCal.locator(`.datepicker-months span`);
-        this.deptOption = this.page.getByLabel('Departure Date').nth(0);
-        this.returnOption = this.page.getByLabel('Return Date').nth(0);
-        this.cookieButton = this.page.locator('#acknowledgeDemoWarning');
-        this.flightOption = this.page.getByRole('tab',{ name: 'Flights' });
-        this.roundTripOpt = this.page.getByRole('button',{ name: 'Round Trip' });
-        this.deptLocation = this.page.getByLabel('Departure From').nth(0);
-        this.arrLocation = this.page.getByLabel('Arrival To').nth(0);
+        this.rootCal         = this.page.locator(`.datepicker:not(.hidden)`);
+        this.datePicker      = this.rootCal.locator(`div.day:not(.disabled)`);
+        this.monthChecker    = this.rootCal.locator(`.datepicker-months span`);
+        this.deptOption      = this.page.getByLabel('Departure Date').nth(0);
+        this.returnOption    = this.page.getByLabel('Return Date').nth(0);
+        this.cookieButton    = this.page.locator('#acknowledgeDemoWarning');
+        this.flightOption    = this.page.getByRole('tab',{ name: 'Flights' });
+        this.roundTripOpt    = this.page.getByRole('button',{ name: 'Round Trip' });
+        this.deptLocation    = this.page.getByPlaceholder('Departure City or Airport').nth(0);
+        this.arrLocation     = this.page.getByPlaceholder('Arrival City or Airport').nth(0);
+        this.locFromDropdown = this.page.locator('[x-show*="fromShouldShowDropdown"]');
+        this.locToDropDown   = this.page.locator('[x-show*="toShouldShowDropdown"]');
+        this.locFrom         = this.locFromDropdown.locator('.text-sm').filter({hasText:'Netaji S. Chandra'});
+        this.locTo           = this.locFromDropdown.locator('.text-sm').filter({hasText:'Indira Gandhi Intl'});
+
     }
 
     async pageNavigation(){
@@ -41,7 +51,13 @@ export class HomePage extends BasePage{
     }
 
     async locSelector(){
-        await this.deptLocation.click();
-        await this.arrLocation.click();
+        await this.deptLocation.pressSequentially('Kol',{delay:500});
+        await this.locFromDropdown.waitFor({timeout:1500});
+        await this.locFrom.click();
+        await expect(this.deptLocation).toHaveText('Netaji S. Chandra');
+        await this.arrLocation.pressSequentially('Del',{delay:500});
+        await this.locToDropDown.waitFor({timeout:1500});
+        await this.locTo.click();
+        await expect(this.arrLocation).toHaveText('Indira Gandhi Intl');
     }
 }
