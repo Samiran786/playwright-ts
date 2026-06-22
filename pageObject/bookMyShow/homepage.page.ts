@@ -11,6 +11,8 @@ export class HomePage extends BasePage{
     protected readonly cookieButton : Locator;
     protected readonly flightOption : Locator;
     protected readonly roundTripOpt : Locator;
+    protected readonly deptLocation : Locator;
+    protected readonly arrLocation  : Locator;
     
     constructor(page:Page){
         super(page);
@@ -22,6 +24,8 @@ export class HomePage extends BasePage{
         this.cookieButton = this.page.locator('#acknowledgeDemoWarning');
         this.flightOption = this.page.getByRole('tab',{ name: 'Flights' });
         this.roundTripOpt = this.page.getByRole('button',{ name: 'Round Trip' });
+        this.deptLocation = this.page.getByLabel('Departure From').nth(0);
+        this.arrLocation = this.page.getByLabel('Arrival To').nth(0);
     }
 
     async pageNavigation(){
@@ -34,5 +38,10 @@ export class HomePage extends BasePage{
         await this.flightOption.click();
         await this.roundTripOpt.click();
         await calenderSel.dateSelector(this.deptOption,this.returnOption,(dateGap-1));
+    }
+
+    async locSelector(){
+        await this.deptLocation.click();
+        await this.arrLocation.click();
     }
 }
