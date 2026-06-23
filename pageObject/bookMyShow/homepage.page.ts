@@ -67,7 +67,6 @@ export class HomePage extends BasePage{
     }
 
     async serchSelection(){
-        //await this.page.locator('.datepicker-overlay').click();
         await this.searchButton.click();
     }
 }

@@ -3,21 +3,20 @@ import { BasePage } from './basepage.page';
 import { HomePage } from './homepage.page';
 
 export class FlightListPage extends BasePage{
-    protected readonly flightList : Locator;
-    protected readonly numFlight : Locator;
-    protected readonly numFlightList : Locator;
-    protected readonly ticketPrices : Locator;
+    protected readonly flightList       : Locator;
+    protected readonly numFlight        : Locator;
+    protected readonly numFlightList    : Locator;
+    protected readonly ticketPrices     : Locator;
 
     constructor(page:Page){
         super(page);
-        this.flightList = this.page.locator('.space-y-4.relative');
-        this.numFlight  =  this.page.locator('[x-show="!loading"]');
-        this.numFlightList = this.flightList.locator('.hidden');   
-        this.ticketPrices = this.numFlightList.locator('.text-lg');
+        this.flightList     = this.page.locator('.space-y-4.relative');
+        this.numFlight      =  this.page.locator('[x-show="!loading"]');
+        this.numFlightList  = this.flightList.locator('.hidden');   
+        this.ticketPrices   = this.numFlightList.locator('.text-lg');
     }
 
     async pageLoadChecker(){
-        //await this.cookieSelector(this.cookieButton);
         await this.flightList.waitFor({timeout:15000});
     }
 
