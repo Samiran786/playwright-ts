@@ -34,7 +34,7 @@ export class HomePage extends BasePage{
         this.locFromDropdown = this.page.locator('[x-show*="fromShouldShowDropdown"]');
         this.locToDropDown   = this.page.locator('[x-show*="toShouldShowDropdown"]');
         this.locFrom         = this.locFromDropdown.locator('.text-sm').filter({hasText:'Netaji S. Chandra'});
-        this.locTo           = this.locFromDropdown.locator('.text-sm').filter({hasText:'Indira Gandhi Intl'});
+        this.locTo           = this.locToDropDown.locator('.text-sm').filter({hasText:'Indira Gandhi Intl'});
 
     }
 
@@ -43,21 +43,26 @@ export class HomePage extends BasePage{
         await this.cookieButton.click();
     }
 
-    async dateSelector(dateGap:number){
-        const calenderSel = new calenderSelector(this.page,this.rootCal,this.datePicker,this.monthChecker);
+    async roundTripFlightSel(){
         await this.flightOption.click();
         await this.roundTripOpt.click();
+    }
+
+    async dateSelector(dateGap:number){
+        const calenderSel = new calenderSelector(this.page,this.rootCal,this.datePicker,this.monthChecker);
+        await this.roundTripFlightSel();
         await calenderSel.dateSelector(this.deptOption,this.returnOption,(dateGap-1));
     }
 
     async locSelector(){
+        await this.roundTripFlightSel();
         await this.deptLocation.pressSequentially('Kol',{delay:500});
         await this.locFromDropdown.waitFor({timeout:1500});
         await this.locFrom.click();
-        await expect(this.deptLocation).toHaveText('Netaji S. Chandra');
+        await expect(this.deptLocation).toHaveValue(/Netaji S. Chandra/);
         await this.arrLocation.pressSequentially('Del',{delay:500});
         await this.locToDropDown.waitFor({timeout:1500});
         await this.locTo.click();
-        await expect(this.arrLocation).toHaveText('Indira Gandhi Intl');
+        await expect(this.arrLocation).toHaveValue(/Indira Gandhi Intl/);
     }
 }

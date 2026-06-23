@@ -17,6 +17,8 @@ export class calenderSelector{
         await this.datePicker.first().click();
         await returnOpt.click();
         const futureDate:string = await this.datePicker.nth(retunDays).textContent() ?? '';
+        console.log(retunDays);
+        console.log(futureDate);
         await this.datePicker.nth(retunDays).click();
     }
 }
