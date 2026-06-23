@@ -8,7 +8,6 @@ export class HomePage extends BasePage{
     protected readonly monthChecker     : Locator;
     protected readonly deptOption       : Locator;
     protected readonly returnOption     : Locator;
-    protected readonly cookieButton     : Locator;
     protected readonly flightOption     : Locator;
     protected readonly roundTripOpt     : Locator;
     protected readonly deptLocation     : Locator;
@@ -17,6 +16,7 @@ export class HomePage extends BasePage{
     protected readonly locToDropDown    : Locator;
     protected readonly locFrom          : Locator;
     protected readonly locTo            : Locator;
+    protected readonly searchButton     : Locator;
 
     
     constructor(page:Page){
@@ -26,7 +26,6 @@ export class HomePage extends BasePage{
         this.monthChecker    = this.rootCal.locator(`.datepicker-months span`);
         this.deptOption      = this.page.getByLabel('Departure Date').nth(0);
         this.returnOption    = this.page.getByLabel('Return Date').nth(0);
-        this.cookieButton    = this.page.locator('#acknowledgeDemoWarning');
         this.flightOption    = this.page.getByRole('tab',{ name: 'Flights' });
         this.roundTripOpt    = this.page.getByRole('button',{ name: 'Round Trip' });
         this.deptLocation    = this.page.getByPlaceholder('Departure City or Airport').nth(0);
@@ -35,12 +34,15 @@ export class HomePage extends BasePage{
         this.locToDropDown   = this.page.locator('[x-show*="toShouldShowDropdown"]');
         this.locFrom         = this.locFromDropdown.locator('.text-sm').filter({hasText:'Netaji S. Chandra'});
         this.locTo           = this.locToDropDown.locator('.text-sm').filter({hasText:'Indira Gandhi Intl'});
+        this.searchButton    = this.page.getByLabel('Search Flights');
 
     }
 
-    async pageNavigation(){
-        await this.page.goto("https://phptravels.net/");
-        await this.cookieButton.click();
+    
+    async homePageNavigation(url:string){
+        await this.pageNavigation(url);
+        await this.cookieSelector(this.cookieButton);
+        await this.roundTripFlightSel();
     }
 
     async roundTripFlightSel(){
@@ -48,14 +50,12 @@ export class HomePage extends BasePage{
         await this.roundTripOpt.click();
     }
 
-    async dateSelector(dateGap:number){
+    async dateSelector(dateSelectorType:string, dateGap:number){
         const calenderSel = new calenderSelector(this.page,this.rootCal,this.datePicker,this.monthChecker);
-        await this.roundTripFlightSel();
-        await calenderSel.dateSelector(this.deptOption,this.returnOption,(dateGap-1));
+        await calenderSel.dateSelector(dateSelectorType,this.deptOption,this.returnOption,(dateGap-1));
     }
 
     async locSelector(){
-        await this.roundTripFlightSel();
         await this.deptLocation.pressSequentially('Kol',{delay:500});
         await this.locFromDropdown.waitFor({timeout:1500});
         await this.locFrom.click();
@@ -64,5 +64,10 @@ export class HomePage extends BasePage{
         await this.locToDropDown.waitFor({timeout:1500});
         await this.locTo.click();
         await expect(this.arrLocation).toHaveValue(/Indira Gandhi Intl/);
+    }
+
+    async serchSelection(){
+        //await this.page.locator('.datepicker-overlay').click();
+        await this.searchButton.click();
     }
 }

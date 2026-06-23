@@ -11,14 +11,20 @@ export class calenderSelector{
         this.monthChecker = monthChecker;
 
     }
-    async dateSelector(deptOption:Locator,returnOpt:Locator,retunDays:number):Promise<void> {
-        await deptOption.click();
-        const str:string =await this.datePicker.first().textContent() ?? '';
+    async dateSelector(optionSelector:string,deptOption:Locator,returnOpt:Locator,retunDays:number):Promise<void> {
+        if(optionSelector==='enabled'){
+            await deptOption.click();
+        }
+        // await deptOption.click();
+        // const str:string =await this.datePicker.first().textContent() ?? '';
         await this.datePicker.first().click();
-        await returnOpt.click();
-        const futureDate:string = await this.datePicker.nth(retunDays).textContent() ?? '';
-        console.log(retunDays);
-        console.log(futureDate);
+        if(optionSelector==='enabled'){
+            await returnOpt.click();
+        }
+        // await returnOpt.click();
+        // const futureDate:string = await this.datePicker.nth(retunDays).textContent() ?? '';
+        // console.log(retunDays);
+        // console.log(futureDate);
         await this.datePicker.nth(retunDays).click();
     }
 }
