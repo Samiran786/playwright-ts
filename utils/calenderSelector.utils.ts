@@ -15,16 +15,11 @@ export class calenderSelector{
         if(optionSelector==='enabled'){
             await deptOption.click();
         }
-        // await deptOption.click();
-        // const str:string =await this.datePicker.first().textContent() ?? '';
         await this.datePicker.first().click();
         if(optionSelector==='enabled'){
             await returnOpt.click();
         }
-        // await returnOpt.click();
-        // const futureDate:string = await this.datePicker.nth(retunDays).textContent() ?? '';
-        // console.log(retunDays);
-        // console.log(futureDate);
-        await this.datePicker.nth(retunDays).click();
+        await this.datePicker.nth(retunDays).waitFor({timeout:1500});
+        await this.datePicker.nth(retunDays).click({ force: true });
     }
 }

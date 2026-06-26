@@ -58,6 +58,8 @@ export class FlightListPage extends BasePage{
         if(await this.isSorted(ticketPriceCollections)===true){
             console.log(ticketPriceCollections[0]);
             await this.numFlightList.nth(0).locator('.btn').click();
+        }else{
+            console.error('The price list is not sorted');
         }
     }
 
