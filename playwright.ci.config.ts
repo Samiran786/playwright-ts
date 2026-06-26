@@ -1,4 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
+import { on } from 'node:cluster';
 
 /**
  * Read environment variables from file.
@@ -37,7 +38,9 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: {...devices['Desktop Chrome'] },
+      use: {
+        screenshot: 'on',
+        ...devices['Desktop Chrome'] },
     },
 
     {
