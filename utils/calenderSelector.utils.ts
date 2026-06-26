@@ -12,13 +12,13 @@ export class calenderSelector{
 
     }
     async dateSelector(optionSelector:string,deptOption:Locator,returnOpt:Locator,retunDays:number):Promise<void> {
-        if(optionSelector==='enabled'){
+        //if(optionSelector==='enabled'){
             await deptOption.click();
-        }
+        //}
         await this.datePicker.first().click();
-        if(optionSelector==='enabled'){
+        //if(optionSelector==='enabled'){
             await returnOpt.click();
-        }
+        //}
         await this.datePicker.nth(retunDays).waitFor({timeout:1500});
         await this.datePicker.nth(retunDays).click({ force: true });
     }
